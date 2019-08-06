@@ -40,12 +40,6 @@ function loadPlaces(map, lat = 43.2, lng = -79.8) {
       return marker;
     });
 
-    // markers.forEach(marker =>
-    //   marker.addListener('click', function() {
-    //     console.log(this);
-    //   })
-    // );
-
     map.setCenter(bounds.getCenter());
     map.fitBounds(bounds);
   });
@@ -59,6 +53,14 @@ function makeMap(mapDiv) {
 
   const input = $('[name="geolocate"]');
   const autocomplete = new google.maps.places.Autocomplete(input);
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
+    loadPlaces(
+      map,
+      place.geometry.location.lat(),
+      place.geometry.location.lng()
+    );
+  });
 }
 
 export default makeMap;
